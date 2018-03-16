@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,9 +18,32 @@ namespace UniversidadeTramontina.Controllers
         }
 
         // GET: Estudantes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string ordem)
         {
-            return View(await _context.Estudantes.ToListAsync());
+            ViewData["NomeParm"] = String.IsNullOrEmpty(ordem) ? "nome_desc" : "";
+            ViewData["DataParm"] = ordem == "Data" ? "data_desc" : "Data";
+
+            var estudantes = from est in _context.Estudantes
+                             select est;
+
+            switch (ordem)
+            {
+                case "nome_desc":
+                    estudantes = estudantes.OrderByDescending(est => est.SobreNome);
+                    break;
+                case "Data":
+                    estudantes = estudantes.OrderBy(est => est.DataMatricula);
+                    break;
+                case "data_desc":
+                    estudantes = estudantes.OrderByDescending(est => est.DataMatricula);
+                    break;
+                default:
+                    estudantes = estudantes.OrderBy(est => est.SobreNome);
+                    break;
+            }
+
+            //return View(await _context.Estudantes.ToListAsync());
+            return View(await estudantes.AsNoTracking().ToListAsync());
         }
 
         // GET: Estudantes/Details/5
@@ -129,7 +153,7 @@ namespace UniversidadeTramontina.Controllers
         }
 
         // GET: Estudantes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
             {
@@ -137,10 +161,19 @@ namespace UniversidadeTramontina.Controllers
             }
 
             var estudante = await _context.Estudantes
+                .AsNoTracking()
                 .SingleOrDefaultAsync(m => m.EstudanteID == id);
+
             if (estudante == null)
             {
                 return NotFound();
+            }
+
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewData["ErrorMessage"] =
+                    "A exclusão falhou. Tente novamente e se o problema persistir " +
+                    "contate o suporte.";
             }
 
             return View(estudante);
@@ -151,10 +184,27 @@ namespace UniversidadeTramontina.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var estudante = await _context.Estudantes.SingleOrDefaultAsync(m => m.EstudanteID == id);
-            _context.Estudantes.Remove(estudante);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            var estudante = await _context.Estudantes
+                .AsNoTracking()
+                .SingleOrDefaultAsync(m => m.EstudanteID == id);
+
+            if (estudante == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            try
+            {
+                _context.Estudantes.Remove(estudante);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                // Logar o erro
+                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+            }
+            
         }
 
         private bool EstudanteExists(int id)

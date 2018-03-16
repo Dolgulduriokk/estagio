@@ -12,15 +12,17 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.SobreNome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Nome)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DataMatricula)
-                </th>
+            <th>
+                @*Html.DisplayNameFor(model => model.SobreNome)*@
+                <a asp-action="Index" asp-route-ordem="@ViewData["NomeParm"]">@Html.DisplayNameFor(model => model.SobreNome)</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @*Html.DisplayNameFor(model => model.DataMatricula)*@
+                <a asp-action="Index" asp-route-ordem="@ViewData["DataParm"]">@Html.DisplayNameFor(model => model.DataMatricula)</a>
+            </th>
             <th></th>
         </tr>
     </thead>
