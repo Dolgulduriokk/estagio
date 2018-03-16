@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Web_01.Models;
+using UniversidadeTramontina.Models;
 
-namespace Web_01.Data
+namespace UniversidadeTramontina.Data
 {
     public class EscolaContexto : DbContext
     {

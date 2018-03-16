@@ -1,0 +1,60 @@
+﻿@model UniversidadeTramontina.Models.Estudante
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Estudante</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SobreNome)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SobreNome)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.DataMatricula)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DataMatricula)
+        </dd>
+        <!--Exibe as matriculas do estudante -->
+        <dt>
+            @Html.DisplayNameFor(model => model.Matriculas)
+        </dt>
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>Curso</th>
+                    <th>Nota</th>
+                </tr>
+                @foreach (var item in Model.Matriculas)
+                { 
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Curso.Titulo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nota)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+        <!-- fim -->
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.EstudanteID">Editar</a> |
+    <a asp-action="Index">Voltar à Lista</a>
+</div>

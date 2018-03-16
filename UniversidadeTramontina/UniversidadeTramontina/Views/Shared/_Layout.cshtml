@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Web 01</title>
+    <title>@ViewData["Title"] - Universidade Tramontina</title>
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -26,15 +26,16 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-page="/Index" class="navbar-brand">Web 01</a>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">Universidade Tramontina</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-page="/Index">Home</a></li>
-                    <li><a asp-page="/Estudantes">Estudantes</a></li>
-                    <li><a asp-page="/Cursos">Cursos</a></li>
-                    <li><a asp-page="/Instrutores">Instrutores</a></li>
-                    <li><a asp-page="/Departamentos">Departamentos</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="Estudantes" asp-action="Index">Estudantes</a></li>
+                    <li><a asp-area="" asp-controller="Cursos" asp-action="Index">Cursos</a></li>
+                    <li><a asp-area="" asp-controller="Instrutores" asp-action="Index">Instrutores</a></li>
+                    <li><a asp-area="" asp-controller="Departamentos" asp-action="Index">Departamentos</a></li>
                 </ul>
             </div>
         </div>
@@ -43,7 +44,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2017 - Web 01</p>
+            <p>&copy; 2018 - Universidade Tramontina</p>
         </footer>
     </div>
 
